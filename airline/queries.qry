@@ -1,0 +1,64 @@
+// Returns all flights 
+query AllFlights {
+  description: "Returns all flights in the registry"
+  statement:  
+    SELECT  org.acme.airline.flight.Flight
+}
+
+// Uses the Limit and Skip
+query AllFlightsSkipLimit {
+  description: "Limits the number of flights returned"
+  statement:  
+    SELECT  org.acme.airline.flight.Flight
+      LIMIT  _$limit
+        SKIP   _$skip
+}
+
+// Selects flights based on the origin and destination
+query FlightsOriginAndDestination {
+  description: "Returns all flights in the registry"
+  statement:  
+    SELECT  org.acme.airline.flight.Flight
+      WHERE   (route.origin == _$origin_airport AND route.destination  == _$destination_airport )
+}
+
+// Selects flights based on the origin, destination & exact Schedule datetime (yep its not good :)
+query FlightsOnOriginDestinationDate {
+  description: "Returns all flights in the registry"
+  statement:  
+    SELECT  org.acme.airline.flight.Flight
+    WHERE (route.origin == _$origin_airport AND route.destination  == _$destination_airport AND route.schedule == _$date)
+}
+
+// Returns all aircrafts
+query AllAircrafts {
+  description: "Returns all aircrafts"
+  statement:
+    SELECT org.acme.airline.aircraft.Aircraft
+}
+
+// Returns aircraft with specific ownership types
+query AircraftsOwnership {
+  description: "Returns aircrafts with specific ownership type"
+  statement: 
+    SELECT org.acme.airline.aircraft.Aircraft
+    WHERE (ownershipType == _$aircraft_ownership)
+}
+
+// Returns aircraft with specific number of seats
+query AircraftsWithSeats{
+  description: "Returns aircraft with specific number of seats"
+  statement: 
+    SELECT org.acme.airline.aircraft.Aircraft
+    WHERE (firstClassSeats >= _$n_firstClass AND 
+           businessClassSeats >= _$n_businessClass AND 
+           economyClassSeats >= _$n_economyClass)
+}
+
+// query FlightByAircraft{
+//   description: "Returns a flight with a specific assigned aircraft"
+//   statement: 
+//     SELECT org.acme.airline.flight.Flight
+//     WHERE (aircraft == _$aircraft)
+// }
+
